@@ -1,6 +1,9 @@
 import subprocess
 import socket
 
+common_ports = [21,22,23,25,80,110,143,443,3380]
+
+
 def is_host_up(ip):
     result = subprocess.run (
         ["ping","-c", "1", ip],
@@ -23,9 +26,21 @@ def scan_network(base_ip,start,end):
             print(f"{ip} is UP")
 
 
-
-
-
+def is_port_open(ip,port):
+    # 1. create socket
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    # 2. set timeout
+    s.settimeout(0.5)
+    # 3. call connect_ex
+    result = s.connect_ex((ip,port))
+    # 4. close socket
+    s.close()
+    # 5. return True/False based on result
+    if result == 0:
+        return True
+    else:
+        return False
+    
 
 if __name__ == "__main__":
     pass
