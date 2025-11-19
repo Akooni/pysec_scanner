@@ -3,7 +3,9 @@ import socket
 
 common_ports = [21,22,23,25,80,110,143,443,3389]
 
-
+# This send a ping command 1 packet per ip 
+#if return code equals to 0 then ip is up
+#else ip is down
 def is_host_up(ip):
     result = subprocess.run (
         ["ping","-c", "1", ip],
@@ -17,7 +19,11 @@ def is_host_up(ip):
         return False
     
 
-
+#This loop through usr hosts
+#then it combine the base ip with hosts in range
+#after looping with ip and hosts it will use that ip 
+#and call for is_host_up function if true print the ip is up
+#in the end it calls for scan_ports_for_hosts and use ip as a parameter
 def scan_network(base_ip,start,end):
     for host in range (start,end + 1):
         ip = base_ip + str(host)
@@ -47,16 +53,22 @@ def scan_ports_for_hosts(ip):
     print(f"\nScanning common ports on {ip}")
     #1 loop through the common ports
     for port in common_ports:
-
+        #2 use the port in is_port_open function
         if is_port_open(ip,port):
             print(f"Port {port} is OPEN")
-    #2 use the port in is port open
+        #3 if not True print the port is closed
+        else:
+            print(f"Port {port} is CLOSED")
+    
 
     
         
 
 
-
-
+#Taking user input and using it in scan_network function
 if __name__ == "__main__":
-    pass
+    base_ip = input("Enter ip address e.g(192.168.1.): ")
+    start = int(input("Enter First Host: "))
+    end = int(input("Enter end Host: "))
+
+    scan_network(base_ip,start,end)    
