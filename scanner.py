@@ -1,7 +1,7 @@
 import subprocess
 import socket
 
-common_ports = [21,22,23,25,80,110,143,443,3380]
+common_ports = [21,22,23,25,80,110,143,443,3389]
 
 
 def is_host_up(ip):
@@ -24,7 +24,7 @@ def scan_network(base_ip,start,end):
     
         if is_host_up(ip) == True:
             print(f"{ip} is UP")
-
+            scan_ports_for_hosts(ip)
 
 def is_port_open(ip,port):
     # 1. create socket
@@ -41,6 +41,22 @@ def is_port_open(ip,port):
     else:
         return False
     
+
+
+def scan_ports_for_hosts(ip):
+    print(f"\nScanning common ports on {ip}")
+    #1 loop through the common ports
+    for port in common_ports:
+
+        if is_port_open(ip,port):
+            print(f"Port {port} is OPEN")
+    #2 use the port in is port open
+
+    
+        
+
+
+
 
 if __name__ == "__main__":
     pass
