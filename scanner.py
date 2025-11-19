@@ -14,9 +14,17 @@ def is_host_up(ip):
         return False
     
 
-    
+
 def scan_network(base_ip,start,end):
-    pass
+    for host in range (start,end + 1):
+        ip = base_ip + str(host)
+    
+        if is_host_up(ip) == True:
+            print(f"{ip} is UP")
+
+
+
+
 
 
 if __name__ == "__main__":
