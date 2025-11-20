@@ -31,7 +31,10 @@ def scan_network(base_ip,start,end):
         if is_host_up(ip) == True:
             print(f"{ip} is UP")
             scan_ports_for_hosts(ip)
+        else:
+            print(f"{ip} is DOWN")
 
+            
 def is_port_open(ip,port):
     # 1. create socket
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -72,3 +75,12 @@ if __name__ == "__main__":
     end = int(input("Enter end Host: "))
 
     scan_network(base_ip,start,end)    
+
+
+#ok so the next feature i want to when there is and open port it shows that could be 
+# a vulrabinty 
+#ex 23 port is u
+# # ftp -> is open which is considered a vurnabitly
+#  
+# 
+# for each different port it will show a different message so i will start with a one first 
