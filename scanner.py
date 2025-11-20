@@ -78,10 +78,16 @@ def scan_ports_for_hosts(ip):
 #print warining based on the rules
 
 def port_vulnerabilities(ip,open_ports):
-    
-    pass
-    
+    print(f"Checking vulnerabilities for {ip}")
+
+    if 21 in open_ports:    
+        print("FTP detected — sends passwords in plaintext (insecure)")
+    if 23 in open_ports:
+        print("Telnet detected — no encryption,highly insecure")
         
+    if 80 in open_ports and 443 not in open_ports:
+        print("HTTP without HTTPS — traffic is not encrypted")
+
 
 
 #Taking user input and using it in scan_network function
