@@ -28,9 +28,13 @@ def scan_network(base_ip,start,end):
     for host in range (start,end + 1):
         ip = base_ip + str(host)
     
-        if is_host_up(ip) == True:
+        if is_host_up(ip):
             print(f"{ip} is UP")
-            scan_ports_for_hosts(ip)
+
+            open_ports = scan_ports_for_hosts(ip)
+
+            port_vulnerabilities(ip,open_ports)
+
         else:
             print(f"{ip} is DOWN")
 
@@ -55,15 +59,27 @@ def is_port_open(ip,port):
 def scan_ports_for_hosts(ip):
     print(f"\nScanning common ports on {ip}")
     #1 loop through the common ports
+    open_ports = []
     for port in common_ports:
         #2 use the port in is_port_open function
         if is_port_open(ip,port):
             print(f"Port {port} is OPEN")
+            open_ports.append(port)
+
+            print(open_ports)
         #3 if not True print the port is closed
         else:
             print(f"Port {port} is CLOSED")
-    
+    return open_ports
 
+
+#take an ip
+#check it's open ports
+#print warining based on the rules
+
+def port_vulnerabilities(ip,open_ports):
+    
+    pass
     
         
 
