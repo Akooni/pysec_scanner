@@ -2,6 +2,17 @@ import subprocess
 import socket
 
 common_ports = [21,22,23,25,80,110,143,443,3389]
+service_names = {
+    21: "FTP",
+    22: "SSH",
+    23: "TELNET",
+    25: "SMTP",
+    80: "HTTP",
+    110: "POP3",
+    143: "IMAP",
+    443: "HTTPS",
+    3389: "RDP"
+}
 
 # This send a ping command 1 packet per ip 
 #if return code equals to 0 then ip is up
@@ -29,14 +40,14 @@ def scan_network(base_ip,start,end):
         ip = base_ip + str(host)
     
         if is_host_up(ip):
-            print(f"{ip} is UP")
+            print("\n" + "-" * 50)
+            print(f"Host: {ip}  ✓ ONLINE")
+            print("-" * 50)
 
             open_ports = scan_ports_for_hosts(ip)
 
             port_vulnerabilities(ip,open_ports)
-
-        else:
-            print(f"{ip} is DOWN")
+            print("-" * 50)
 
             
 def is_port_open(ip,port):
@@ -57,19 +68,15 @@ def is_port_open(ip,port):
 
 
 def scan_ports_for_hosts(ip):
-    print(f"\nScanning common ports on {ip}")
+    print(f"Open Ports:")
     #1 loop through the common ports
     open_ports = []
     for port in common_ports:
         #2 use the port in is_port_open function
         if is_port_open(ip,port):
-            print(f"Port {port} is OPEN")
+            print(f"   • {port} ({service_names[port]})")
             open_ports.append(port)
-
-            print(open_ports)
         #3 if not True print the port is closed
-        else:
-            print(f"Port {port} is CLOSED")
     return open_ports
 
 
@@ -78,19 +85,29 @@ def scan_ports_for_hosts(ip):
 #print warining based on the rules
 
 def port_vulnerabilities(ip,open_ports):
-    print(f"Checking vulnerabilities for {ip}")
+    print(f"\nVulnerabilities:\n")
+    found_vulnerability = False
+
 
     if 21 in open_ports:    
-        print("FTP detected — sends passwords in plaintext (insecure)")
+        print("⚠ FTP detected — sends passwords in plaintext (insecure)")
+        found_vulnerability = True
         
+
     if 23 in open_ports:
-        print("Telnet detected — no encryption,highly insecure")
-        
+        print("⚠ Telnet detected — no encryption,highly insecure")
+        found_vulnerability = True
+
     if 80 in open_ports and 443 not in open_ports:
-        print("HTTP without HTTPS — traffic is not encrypted")
+        print("⚠ HTTP without HTTPS — traffic is not encrypted")
+        found_vulnerability = True
 
     if 3389 in open_ports:
-        print("RDP detected — remote desktop exposed, consider restricting access")
+        print("⚠ RDP detected — remote desktop exposed, consider restricting access")
+        found_vulnerability = True
+
+    if not found_vulnerability:
+        print("• No obvious vulnerabilities detected")
 
 
 #Taking user input and using it in scan_network function
