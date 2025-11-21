@@ -70,12 +70,16 @@ def is_port_open(ip,port):
 def scan_ports_for_hosts(ip):
     print(f"Open Ports:")
     #1 loop through the common ports
+    port_none = False
     open_ports = []
     for port in common_ports:
         #2 use the port in is_port_open function
         if is_port_open(ip,port):
+            port_none= True
             print(f"   • {port} ({service_names[port]})")
             open_ports.append(port)
+    if not port_none:
+        print("• None")
         #3 if not True print the port is closed
     return open_ports
 
