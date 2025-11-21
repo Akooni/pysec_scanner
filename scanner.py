@@ -82,12 +82,15 @@ def port_vulnerabilities(ip,open_ports):
 
     if 21 in open_ports:    
         print("FTP detected — sends passwords in plaintext (insecure)")
+        
     if 23 in open_ports:
         print("Telnet detected — no encryption,highly insecure")
         
     if 80 in open_ports and 443 not in open_ports:
         print("HTTP without HTTPS — traffic is not encrypted")
 
+    if 3389 in open_ports:
+        print("RDP detected — remote desktop exposed, consider restricting access")
 
 
 #Taking user input and using it in scan_network function
