@@ -1,6 +1,9 @@
+#!/usr/bin/env python3
 import subprocess
 import socket
 
+
+#Variables that needed to make the rest work
 common_ports = [21,22,23,25,80,110,143,443,3389]
 service_names = {
     21: "FTP",
@@ -13,6 +16,15 @@ service_names = {
     443: "HTTPS",
     3389: "RDP"
 }
+
+RED = "\033[31m"
+GREEN = "\033[32m"
+YELLOW = "\033[33m"
+BLUE = "\033[34m"
+CYAN = "\033[36m"
+BOLD = "\033[1m"
+RESET = "\033[0m"
+
 
 # This send a ping command 1 packet per ip 
 #if return code equals to 0 then ip is up
@@ -41,7 +53,7 @@ def scan_network(base_ip,start,end):
     
         if is_host_up(ip):
             print("\n" + "-" * 50)
-            print(f"Host: {ip}  ✓ ONLINE")
+            print(f"{GREEN}Host: {ip}  ✓ ONLINE{RESET}")
             print("-" * 50)
 
             open_ports = scan_ports_for_hosts(ip)
