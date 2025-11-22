@@ -92,7 +92,7 @@ def scan_ports_for_hosts(ip):
             print(f"   • {port} ({service_names[port]})")
             open_ports.append(port)
     if not port_none:
-        print("• None")
+        print(f"• {CYAN}None{RESET}")
         #3 if not True print the port is closed
     return open_ports
 
@@ -108,11 +108,11 @@ def port_vulnerabilities(ip,open_ports):
 
 
     if 21 in open_ports:    
-        print("⚠ FTP detected — sends passwords in plaintext (insecure)")
+        print(f"{RED}⚠ FTP detected — sends passwords in plaintext (insecure){RESET}")
         found_vulnerability = True
         
     if 22 in open_ports:
-        print("⚠ SSH detected — could lead to Unauthorized Access & System Compromise")
+        print(f"{YELLOW}⚠ SSH detected — could lead to Unauthorized Access & System Compromise{RESET}")
         banner = ssh_banner(ip)
         if banner:
             print(f"SSH Banner: {banner.strip()}")
@@ -136,19 +136,19 @@ def port_vulnerabilities(ip,open_ports):
 
 
     if 23 in open_ports:
-        print("⚠ Telnet detected — no encryption,highly insecure")
+        print(f"{RED}⚠ Telnet detected — no encryption,highly insecure{RESET}")
         found_vulnerability = True
 
     if 80 in open_ports and 443 not in open_ports:
-        print("⚠ HTTP without HTTPS — traffic is not encrypted")
+        print(f"{RED}⚠ HTTP without HTTPS — traffic is not encrypted{RESET}")
         found_vulnerability = True
 
     if 3389 in open_ports:
-        print("⚠ RDP detected — remote desktop exposed, consider restricting access")
+        print(f"{RED}⚠ RDP detected — remote desktop exposed, consider restricting access{RESET}")
         found_vulnerability = True
 
     if not found_vulnerability:
-        print("• No obvious vulnerabilities detected")
+        print(f"{CYAN}• No obvious vulnerabilities detected{RESET}")
 
 
 
