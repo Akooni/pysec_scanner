@@ -45,7 +45,8 @@ def scan_network(base_ip,start,end):
             print("-" * 50)
 
             open_ports = scan_ports_for_hosts(ip)
-
+            
+            ssh_banner(ip)
             port_vulnerabilities(ip,open_ports)
             print("-" * 50)
 
@@ -112,6 +113,26 @@ def port_vulnerabilities(ip,open_ports):
 
     if not found_vulnerability:
         print("• No obvious vulnerabilities detected")
+
+
+
+
+
+
+def ssh_banner(ip):
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.settimeout(0.5)
+    result = s.connect_ex((ip,22))
+    if result != 0:
+        s.close()
+        return None
+    
+    data = s.recv(1024)
+    banner = data.decode(errors="ignore")
+    s.close()
+    return banner
+
+    
 
 
 #Taking user input and using it in scan_network function
