@@ -91,6 +91,7 @@ def scan_ports_for_hosts(ip):
 
 def port_vulnerabilities(ip,open_ports):
     print(f"\nVulnerabilities:\n")
+    #used this method so if no ports were open it show None
     found_vulnerability = False
 
 
@@ -98,6 +99,16 @@ def port_vulnerabilities(ip,open_ports):
         print("⚠ FTP detected — sends passwords in plaintext (insecure)")
         found_vulnerability = True
         
+    if 22 in open_ports:
+        print("⚠ SSH detected — could lead to Unauthorized Access & System Compromise")
+        found_vulnerability = True
+        banner = ssh_banner(ip)
+        if banner:
+            print(f"SSH Banner: {banner.strip()}")
+        else:
+            print("SSH is detected, but banner could not be retrieved")
+        
+
 
     if 23 in open_ports:
         print("⚠ Telnet detected — no encryption,highly insecure")
