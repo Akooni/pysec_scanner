@@ -101,12 +101,25 @@ def port_vulnerabilities(ip,open_ports):
         
     if 22 in open_ports:
         print("⚠ SSH detected — could lead to Unauthorized Access & System Compromise")
-        found_vulnerability = True
         banner = ssh_banner(ip)
         if banner:
             print(f"SSH Banner: {banner.strip()}")
+            found_vulnerability = True
+
+            if "OpenSSH_5" in banner or "OpenSSH_6" in banner:
+                print("⚠ Outdated SSH version — vulnerable to multiple known CVEs")
+                found_vulnerability = True
+                
+            if "OpenSSH_3" in banner or "OpenSSH_4" in banner:
+                print("⚠ CRITICAL: Very old SSH version detected — extremely insecure")
+                found_vulnerability = True
+
+            if "dropbear" in banner.lower():
+                print(" Dropbear is detected — common on Iot devices, might be weakly configured")
+                found_vulnerability = True
         else:
             print("SSH is detected, but banner could not be retrieved")
+            found_vulnerability = True
         
 
 
